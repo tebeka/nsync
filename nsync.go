@@ -1,3 +1,4 @@
+// Package nsync provides type safe wrappers around sync.Pool and sync.Map.
 package nsync
 
 import "sync"
