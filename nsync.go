@@ -12,8 +12,7 @@ type Pool[T any] struct {
 	New func() T
 }
 
-func (p *Pool[T]) new() {
-	p.pool = sync.Pool{}
+func (p *Pool[T]) setNew() {
 	if p.New != nil {
 		p.pool.New = func() any {
 			return p.New()
@@ -23,14 +22,14 @@ func (p *Pool[T]) new() {
 
 // Put puts v in the pool.
 func (p *Pool[T]) Put(v T) {
-	p.once.Do(p.new)
+	p.once.Do(p.setNew)
 	p.pool.Put(v)
 }
 
 // Get gets an item from the pool.
 // If there are not items in the pool, the second return value will be false.
 func (p *Pool[T]) Get() (T, bool) {
-	p.once.Do(p.new)
+	p.once.Do(p.setNew)
 	v := p.pool.Get()
 	if v == nil {
 		var zero T

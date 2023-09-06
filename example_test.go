@@ -7,9 +7,8 @@ import (
 	"github.com/tebeka/nsync"
 )
 
-var counter int
-
 func ExamplePool() {
+	var counter int
 	pool := nsync.Pool[int]{
 		New: func() int {
 			counter++
@@ -17,15 +16,16 @@ func ExamplePool() {
 		},
 	}
 	fmt.Println(pool.Get())
-	pool.Put(2)
+	pool.Put(3)
 	fmt.Println(pool.Get())
 
+	// Pool without New function.
 	pool = nsync.Pool[int]{}
 	fmt.Println(pool.Get())
 
 	// Output:
 	// 1 true
-	// 2 true
+	// 3 true
 	// 0 false
 }
 
