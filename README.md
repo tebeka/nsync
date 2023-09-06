@@ -1,5 +1,8 @@
 # nsync - Type Safe Wrapper on Top of sync
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/tebeka/nsync.svg)](https://pkg.go.dev/github.com/tebeka/nsync)
+[![Test](https://github.com/tebeka/nsync/actions/workflows/go.yml/badge.svg)](https://github.com/tebeka/nsync/actions/workflows/go.yml)
+
 Type safe (using generics) wrappers around `sync.Pool` and `sync.Map`
 
 ### Example
