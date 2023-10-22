@@ -9,18 +9,17 @@ import (
 
 func ExamplePool() {
 	var counter int
-	pool := nsync.Pool[int]{
-		New: func() int {
-			counter++
-			return counter
-		},
+	fn := func() int {
+		counter++
+		return counter
 	}
+	pool := nsync.NewPool[int](fn)
 	fmt.Println(pool.Get())
 	pool.Put(3)
 	fmt.Println(pool.Get())
 
 	// Pool without New function.
-	pool = nsync.Pool[int]{}
+	pool = nsync.NewPool[int](nil)
 	fmt.Println(pool.Get())
 
 	// Output:

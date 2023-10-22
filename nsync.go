@@ -7,29 +7,29 @@ import "sync"
 // See sync.Pool documentation for full explanation.
 type Pool[T any] struct {
 	pool sync.Pool
-	once sync.Once
-
-	New func() T
 }
 
-func (p *Pool[T]) setNew() {
-	if p.New != nil {
+// NewPool return a new pool. newFn optionally specifies a function to generate
+// a value when Get would otherwise return nil.
+func NewPool[T any](newFn func() T) *Pool[T] {
+	var p Pool[T]
+	if newFn != nil {
 		p.pool.New = func() any {
-			return p.New()
+			return newFn()
 		}
 	}
+
+	return &p
 }
 
 // Put puts v in the pool.
 func (p *Pool[T]) Put(v T) {
-	p.once.Do(p.setNew)
 	p.pool.Put(v)
 }
 
 // Get gets an item from the pool.
 // If there are not items in the pool, the second return value will be false.
 func (p *Pool[T]) Get() (T, bool) {
-	p.once.Do(p.setNew)
 	v := p.pool.Get()
 	if v == nil {
 		var zero T
